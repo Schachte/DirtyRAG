@@ -8,10 +8,10 @@ from playwright_helper import PlaywrightHelper
 from util.html import clean_html
 from util.json import json_to_dict
 
-from .datasource import Datasource, DatasourceOptions
+from .tool import Tool, ToolOptions
 
 
-class GoogleDatasourceOptions(TypedDict, total=False):
+class GoogleToolOptions(TypedDict, total=False):
     company_name_query: str
     company_name_resolved: Optional[str]
     eval_company_from_link_prompt: Optional[str]
@@ -22,25 +22,23 @@ class GoogleSearchResult(TypedDict, total=False):
     link: str
 
 
-class GoogleDatasourcePromptHelpers(TypedDict, total=False):
+class GoogleToolPromptHelpers(TypedDict, total=False):
     get_stock_prompt: str
     confused_phrase_prompt: str
     eval_company_from_link_prompt: str
 
 
-class GoogleStockDatasource(Datasource):
-    def __init__(self, **opts: DatasourceOptions):
+class GoogleStockTool(Tool):
+    def __init__(self, **opts: ToolOptions):
         llm: Optional[LanguageModel] = opts.get("llm")
         if llm == None:
             raise Exception(f"Missing llm")
         self.llm = llm
 
-        datasource_opts: Optional[DatasourceOptions] = opts.get("source_params")
-        if datasource_opts == None:
+        tool_opts: Optional[ToolOptions] = opts.get("source_params")
+        if tool_opts == None:
             raise Exception(f"Missing options on {self.name} data source")
-        self.datasource_options: GoogleDatasourceOptions = cast(
-            GoogleDatasourceOptions, datasource_opts
-        )
+        self.tool_options: GoogleToolOptions = cast(GoogleToolOptions, tool_opts)
 
         playwright: Optional[PlaywrightHelper] = opts.get("playwright")
         if playwright == None:
@@ -49,11 +47,11 @@ class GoogleStockDatasource(Datasource):
 
     async def pull_content(self) -> str | Dict[str, Any]:
         resolved_name = await self.resolve_company_name_from_input(
-            self.datasource_options["company_name_query"]
+            self.tool_options["company_name_query"]
         )
         resolved_name = resolved_name.strip()
         print(f"Loading recent stock price for {resolved_name}...")
-        self.datasource_options["company_name_resolved"] = resolved_name or "N/A"
+        self.tool_options["company_name_resolved"] = resolved_name or "N/A"
 
         company_query = f"{resolved_name} stock financial data market summary"
         company_query_prepped = company_query.replace(" ", "+")
@@ -84,12 +82,12 @@ class GoogleStockDatasource(Datasource):
 
         company = ""
         if (
-            "company_name_resolved" in self.datasource_options
-            and self.datasource_options["company_name_resolved"] is not None
+            "company_name_resolved" in self.tool_options
+            and self.tool_options["company_name_resolved"] is not None
         ):
-            company = self.datasource_options["company_name_resolved"]
-        elif self.datasource_options["company_name_query"] is not None:
-            company = self.datasource_options["company_name_query"]
+            company = self.tool_options["company_name_resolved"]
+        elif self.tool_options["company_name_query"] is not None:
+            company = self.tool_options["company_name_query"]
 
         parsedJsonResult.update({"company": company})
         return parsedJsonResult  # type: ignore[no-any-return]
@@ -136,7 +134,7 @@ class GoogleStockDatasource(Datasource):
         print(table)
 
     def get_prompts(self, prompt_helpers: Dict[str, Any]) -> Dict[str, str]:
-        google_stock_prompts = cast(GoogleDatasourcePromptHelpers, prompt_helpers)
+        google_stock_prompts = cast(GoogleToolPromptHelpers, prompt_helpers)
         if "get_stock_prompt" in google_stock_prompts:
             get_google_stock_prompt = (
                 "You are a helpful HTML text parsing assistant. I have provided a snippet of HTML code I want you to parse."

@@ -27,8 +27,8 @@ from llm.openai import OpenAILanguageModel
 from playwright_helper import PlaywrightHelper
 
 # Support for custom tooling for RAG context aggregation
-from sources.datasource import Datasource
-from sources.google_stock_datasource import GoogleStockDatasource
+from sources.tool import Tool
+from sources.google_stock_tool import GoogleStockTool
 
 # Feed in user input
 company_name = "billionaire car guy who owns twitter"
@@ -39,15 +39,15 @@ async with PlaywrightHelper(launch_options={"headless": True}) as playwright_hel
     googleai_llm = GoogleLanguageModel()
 
     stock_lookup_parameters = {"company_name_query": company_name}
-    googleStockDatasource: Datasource = GoogleStockDatasource(
+    googleStockTool: Tool = GoogleStockTool(
         source_params=stock_lookup_parameters,
         playwright=playwright_helper,
         llm=googleai_llm,
     )
 
     print(f"Pulling stock information for: {company_name}, please wait...")
-    result = await googleStockDatasource.pull_content()
-    googleStockDatasource.pretty_print_stock_data(result)
+    result = await googleStockTool.pull_content()
+    googleStockTool.pretty_print_stock_data(result)
 ```
 
 _Output_

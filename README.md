@@ -1,6 +1,6 @@
 # DirtyRAG
 
-A smol [https://www.databricks.com/glossary/retrieval-augmented-generation-rag](RAG)-based framework for working with large language models [https://en.wikipedia.org/wiki/Large_language_model]((LLMs)).
+A smol [RAG](https://www.databricks.com/glossary/retrieval-augmented-generation-rag)-based framework for working with large language models [(LLMs)](https://en.wikipedia.org/wiki/Large_language_model).
 
 ## Motivation
 

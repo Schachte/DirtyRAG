@@ -9,8 +9,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "s
 from llm.google import GoogleLanguageModel
 from llm.openai import OpenAILanguageModel
 from playwright_helper import PlaywrightHelper
-from sources.datasource import Datasource
-from sources.google_stock_datasource import GoogleStockDatasource
+from tools.google_stock_tool import GoogleStockTool
+from tools.tool import Tool
 
 load_dotenv()
 
@@ -22,15 +22,15 @@ async def main() -> None:
         # openai_llm = OpenAILanguageModel()
         googleai_llm = GoogleLanguageModel()
 
-        googleStockDatasource: Datasource = GoogleStockDatasource(
+        googleStockTool: Tool = GoogleStockTool(
             source_params={"company_name_query": company_name},
             playwright=playwright_helper,
             llm=googleai_llm,
         )
 
         print(f"Pulling stock information for: {company_name}, please wait...")
-        result = await googleStockDatasource.pull_content()
-        googleStockDatasource.pretty_print_stock_data(result)
+        result = await googleStockTool.pull_content()
+        googleStockTool.pretty_print_stock_data(result)
 
 
 if __name__ == "__main__":

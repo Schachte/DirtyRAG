@@ -4,14 +4,15 @@ from llm.llm import LanguageModel
 from playwright_helper import PlaywrightHelper
 
 
-class DatasourceOptions(TypedDict, total=False):
+class ToolOptions(TypedDict, total=False):
     llm: LanguageModel
     source_params: Dict[str, Any]
     playwright: PlaywrightHelper
 
 
-class Datasource(Protocol):
-    def __init__(self, **opts: DatasourceOptions): ...
+class Tool(Protocol):
+
+    def __init__(self, **opts: ToolOptions): ...
 
     async def pull_content(
         self,

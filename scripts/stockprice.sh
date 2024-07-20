@@ -1,1 +1,1 @@
-python examples/google_stockprice_datasource.py "$1"
+python examples/google_stockprice_tool.py "$1"

@@ -18,7 +18,7 @@ Additionally, this tool will have support for building custom agents and tools t
 
 _Simple RAG based product recommendation tool that leverages a hybrid search approach to reason about it's results_
 
-```python
+```txt
 🧠 Searching Best noise cancelling headphones
 ----------------------------------------------
 

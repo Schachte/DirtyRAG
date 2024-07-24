@@ -1,7 +1,6 @@
 from types import TracebackType
-from typing import Any, Dict, List, Optional, Type, TypedDict, Union
+from typing import Dict, List, Optional, Type, TypedDict, Union
 
-from click import launch
 from playwright.async_api import (
     Browser,
     BrowserContext,

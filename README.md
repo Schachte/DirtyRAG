@@ -16,52 +16,26 @@ Additionally, this tool will have support for building custom agents and tools t
 
 # Examples
 
-_Simple RAG based stock lookup using Google GenAI with a custom stock tool_
+_Simple RAG based product recommendation tool that leverages a hybrid search approach to reason about it's results_
 
 ```python
-# DirtyRAG LLM helpers
-from llm.google import GoogleLanguageModel
-from llm.openai import OpenAILanguageModel
+🧠 Searching Best noise cancelling headphones
+----------------------------------------------
 
-# First-class web scraping tools
-from playwright_helper import PlaywrightHelper
+Cleansing data...
+Parsing content...
+Thinking...
 
-# Support for custom tooling for RAG context aggregation
-from sources.tool import Tool
-from sources.google_stock_tool import GoogleStockTool
+----------------------------------------------
+RESULTS:
+----------------------------------------------
 
-# Feed in user input
-company_name = "billionaire car guy who owns twitter"
+Product: QuietComfort 35 II Noise Cancelling Wireless Headphones
+Link: https://global.bose.com/content/consumer_electronics/b2c_catalog/worldwide/websites/en_ae/product/qc35_ii.html
 
-async with PlaywrightHelper(launch_options={"headless": True}) as playwright_helper:
-    # Choose preferred language model
-    # openai_llm = OpenAILanguageModel()
-    googleai_llm = GoogleLanguageModel()
+Product: Sony WH1000XM4/B Premium Noise Cancelling Wireless ...
+Link: https://electronics.sony.com/audio/headphones/headband/p/wh1000xm4-b
 
-    stock_lookup_parameters = {"company_name_query": company_name}
-    googleStockTool: Tool = GoogleStockTool(
-        source_params=stock_lookup_parameters,
-        playwright=playwright_helper,
-        llm=googleai_llm,
-    )
-
-    print(f"Pulling stock information for: {company_name}, please wait...")
-    result = await googleStockTool.pull_content()
-    googleStockTool.pretty_print_stock_data(result)
-```
-
-_Output_
-
-```
-Pulling stock information for: billionaire car guy who owns twitter, please wait...
-Loading recent stock price for Tesla...
-+------------+--------+
-| Attribute  |  Value |
-+------------+--------+
-| Price      | 239.20 |
-| Currency   |    USD |
-| Amt_change | -10.03 |
-| Pct_change |  4.02% |
-| Company    |  Tesla |
-+------------+--------+
+Product: SENNHEISER Momentum 3 Wireless Noise Cancelling ...
+Link: https://www.amazon.com/Sennheiser-Momentum-Cancelling-Headphones-Functionality/dp/B07VW98ZKG
 ```

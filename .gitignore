@@ -71,3 +71,4 @@ ENV/
 .env
 debug_img
 assets
+debug

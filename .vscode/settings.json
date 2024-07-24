@@ -13,14 +13,6 @@
         "editor.formatOnSave": true,
         "editor.rulers": [
             80, // <- a ruler in the default color or as customized at column 0
-            {
-                "column": 100,
-                "color": "#fc8c6d"
-            },
-            {
-                "column": 120,
-                "color": "#ff0000"
-            }
         ],
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.codeActionsOnSave": {

@@ -1,4 +1,4 @@
-.PHONY: check_env create_env activate_venv
+.PHONY: check_env create_env activate_venv run_postgres
 
 check_env:
 	@if [ ! -d "env" ]; then \
@@ -33,3 +33,8 @@ update_pip: activate_venv
 
 save_deps: activate_venv
 	pip freeze > requirements.txt
+
+run_postgres:
+	@echo "Starting Postgres on :5001"
+	@docker-compose -f docker/postgres-docker-compose.yml up
+
